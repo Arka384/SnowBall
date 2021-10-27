@@ -1,0 +1,7 @@
+﻿  SnowFlakes.cpp
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowflakes.hpp(9): warning C4091: 'typedef ': ignored on left of 'flakes' when no variable is declared
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowflakes.hpp(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowflakes.cpp(17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowflakes.cpp(18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowflakes.cpp(22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Snowball.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\TESTS\Snowball\Debug\Snowball.exe
