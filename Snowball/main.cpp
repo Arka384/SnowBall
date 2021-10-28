@@ -11,16 +11,22 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(snowball.windowSize.x, snowball.windowSize.y), "Snow", sf::Style::Close);
 	sf::Clock clk;
 	sf::Time time;
-	sf::Texture bgtex;
-	sf::Sprite bg;
+	sf::Texture bgtex, title_tex;
+	sf::Sprite bg, title;
 	float dt = 0;
+	int game_state = 0;
 
 	snowball.loadTex();
 	rock.loadItems();
 	snowflakes.loadSnowFlakes(snowball.windowSize);
-	bgtex.loadFromFile("textures/bg.png");
+	if (!bgtex.loadFromFile("textures/bg.png") || !title_tex.loadFromFile("textures/titlescreen.png")) {
+		std::cout << "Resource loading failed";
+		exit(1);
+	}
 	bg.setTexture(bgtex);
 	bg.setScale(1.25, 1.25);
+	title.setTexture(title_tex);
+
 
 	srand(static_cast<unsigned>(std::time(0)));
 
@@ -36,27 +42,36 @@ int main()
 			{
 			case sf::Event::Closed:
 				window.close();
-				case sf::Event::KeyPressed:
-					if (e.key.code == sf::Keyboard::Left)
-						snowball.move(dt, 0);
-					if (e.key.code == sf::Keyboard::Right)
-						snowball.move(dt, 1);
+			case sf::Event::KeyPressed:
+				if (e.key.code == sf::Keyboard::Enter)
+					if (game_state == 0) {
+						game_state = 1;
+						snowball.resetSnowball();
+						rock.resetItems();
+						snowflakes.resetSnowFlakes();
+					}
 				break;
 			default:
 				break;
 			}
 		}
 
-		rock.updateItems(dt, snowball.windowSize);
-		snowball.updateSnowball(dt, rock.items, rock.snowtex, rock.rockTex);
-		snowflakes.updateSnowFlakes(dt);
+		if (game_state == 1) {
+			rock.updateItems(dt, snowball.windowSize);
+			snowball.updateSnowball(dt, rock.items, rock.snowtex, rock.rockTex, game_state);
+			snowflakes.updateSnowFlakes(dt);
+		}		
 
 		window.clear();
 		
-		window.draw(bg);
-		snowflakes.renderSnowFlakes(window);
-		window.draw(snowball.ball);
-		rock.renderItems(window);
+		if (game_state == 0)
+			window.draw(title);
+		else {
+			window.draw(bg);
+			snowflakes.renderSnowFlakes(window);
+			window.draw(snowball.ball);
+			rock.renderItems(window);
+		}
 
 		window.display();
 	}

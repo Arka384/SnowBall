@@ -4,8 +4,8 @@
 class Snowball
 {
 private:
-	sf::Vector2f pos, velocity = sf::Vector2f(0, 0);
-	float speed = 2000.f, scaleDecr = 0.00005;
+	sf::Vector2f pos;
+	float speed = 400.f, scaleDecr = 0.00008;
 	sf::Vector2f scallingFactor = sf::Vector2f(1.4, 1.4);
 	int rectX = 0;
 
@@ -17,7 +17,7 @@ public:
 
 	void loadTex(void);
 	void move(float , int );
-	void setVelocityX(float dt);
-	void updateSnowball(float dt, std::list<item> &, sf::Texture &, sf::Texture &);
+	void resetSnowball(void);
+	void updateSnowball(float dt, std::list<item> &, sf::Texture &, sf::Texture &, int &);
 };
 

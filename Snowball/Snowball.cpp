@@ -13,14 +13,12 @@ void Snowball::loadTex(void)
 
 	line.setSize(sf::Vector2f(windowSize.x, 20));
 	line.setPosition(0, windowSize.y - 100);
-
 }
 
 void Snowball::move(float dt, int key)
 {
 	if (key == 0) {	//left
-		velocity.x += speed * dt;
-		pos.x -= velocity.x;
+		pos.x -= speed * dt;
 
 		if (rectX == 0)
 			rectX = 120;
@@ -28,8 +26,7 @@ void Snowball::move(float dt, int key)
 		ball.setTextureRect(sf::IntRect(rectX, 0, 40, 40));
 	}
 	else if (key == 1) {	//right
-		velocity.x += speed * dt;
-		pos.x += velocity.x;
+		pos.x += speed * dt;
 
 		if (rectX == 120)
 			rectX = 0;
@@ -45,22 +42,29 @@ void Snowball::move(float dt, int key)
 	ball.setPosition(pos.x, pos.y);
 }
 
-void Snowball::setVelocityX(float dt)
+void Snowball::resetSnowball(void)
 {
-	if (abs(velocity.x == 0))
-		return;
-
-	if (velocity.x > 0)
-		velocity.x -= 5*dt;
-	else
-		velocity.x += 5*dt;
+	scallingFactor = sf::Vector2f(1.4, 1.4);
+	ball.setScale(scallingFactor);
+	rectX = 0;
+	pos = sf::Vector2f(windowSize.x / 2 - ball.getGlobalBounds().width / 2, windowSize.y - ball.getGlobalBounds().width - 100);
+	ball.setPosition(pos.x, pos.y);
 }
 
-void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &snowTex, sf::Texture &rockTex)
+void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &snowTex, sf::Texture &rockTex, int &gameState)
 {
-	setVelocityX(dt);
+	//input events
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		move(dt, 0);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		move(dt, 1);
+
 	scallingFactor.x = scallingFactor.x - scaleDecr;
 	scallingFactor.y = scallingFactor.y - scaleDecr;
+	if (scallingFactor.x <= 0.2) {
+		gameState = 0;
+		return;
+	}
 	ball.setScale(scallingFactor);
 	pos.y = windowSize.y - ball.getGlobalBounds().width - 100;
 	ball.setPosition(pos.x, pos.y);
@@ -79,7 +83,8 @@ void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &sno
 			if (i->sprite.getGlobalBounds().intersects(ball.getGlobalBounds()) && !i->collided) {
 				i->collided = true;
 				scallingFactor = sf::Vector2f(0, 0);
-				//actually game over here
+				gameState = 0;
+				return;
 			}
 		}
 	}

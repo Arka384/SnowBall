@@ -13,7 +13,6 @@ class GameItems
 {
 private:
 	float timer = 0, spwanTime = 2.f;
-	float fallSpeed = 300.f;
 	int rockCount = 0;
 public:
 	sf::Texture rockTex, snowtex;
@@ -24,5 +23,6 @@ public:
 	void loadItems(void);
 	void spwanItems(float, sf::Vector2i);
 	void updateItems(float, sf::Vector2i);
+	void resetItems(void);
 	void renderItems(sf::RenderWindow &);
 };

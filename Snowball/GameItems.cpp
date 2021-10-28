@@ -48,7 +48,7 @@ void GameItems::updateItems(float dt, sf::Vector2i windowSize)
 	while (i != items.end()) {
 		float y = i->sprite.getPosition().y + i->velocityY * dt;
 		i->sprite.setPosition(i->sprite.getPosition().x, y);
-		if (i->sprite.getPosition().y + i->sprite.getGlobalBounds().width > windowSize.y - 120)
+		if (i->sprite.getPosition().y + i->sprite.getGlobalBounds().width > windowSize.y - 100)
 			i = items.erase(i);
 		else
 			i++;
@@ -56,6 +56,14 @@ void GameItems::updateItems(float dt, sf::Vector2i windowSize)
 
 	//new rock spwaning
 	spwanItems(dt, windowSize);
+}
+
+void GameItems::resetItems(void)
+{
+	items.clear();
+	rockCount = 0;
+	timer = 0;
+	spwanTime = 2.f;
 }
 
 void GameItems::renderItems(sf::RenderWindow &window)

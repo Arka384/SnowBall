@@ -19,7 +19,7 @@ void SnowFlakes::spawnSnowFlakes(float dt)
 		snowFlakeSprite.setPosition(x, -snowFlakeSprite.getGlobalBounds().height);
 		snowFlakeSprite.setScale(scale, scale);
 		temp.sprite = snowFlakeSprite;
-		temp.velocityY = rand() % 80 + 40;
+		temp.velocityY = rand() % 40 + 10;
 		snowflakes.push_back(temp);
 		timer = 0;
 	}
@@ -32,11 +32,17 @@ void SnowFlakes::updateSnowFlakes(float dt)
 	while (i != snowflakes.end()) {
 		float y = i->sprite.getPosition().y + i->velocityY *dt;
 		i->sprite.setPosition(i->sprite.getPosition().x, y);
-		if (i->sprite.getPosition().y > windowSize.y - 120)
+		if (i->sprite.getPosition().y > windowSize.y - 100)
 			i = snowflakes.erase(i);
 		else
 			i++;
 	}
+}
+
+void SnowFlakes::resetSnowFlakes(void)
+{
+	snowflakes.clear();
+	timer = 0;
 }
 
 void SnowFlakes::renderSnowFlakes(sf::RenderWindow &window)
