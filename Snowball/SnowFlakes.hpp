@@ -14,11 +14,11 @@ private:
 	float spawnTime = 0.2;
 	float timer = 0;
 	sf::Vector2i windowSize;
+	flakes temp;
 public:
 	sf::Texture flakesTex;
 	sf::Sprite snowFlakeSprite;
 	std::list<flakes> snowflakes;
-	flakes temp;
 
 	void loadSnowFlakes(sf::Vector2i);
 	void spawnSnowFlakes(float);

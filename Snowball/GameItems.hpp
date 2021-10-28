@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <list>
 
@@ -14,10 +15,13 @@ class GameItems
 private:
 	float timer = 0, spwanTime = 2.f;
 	int rockCount = 0;
+	item temp;
+	sf::SoundBuffer rockbuf;
+	sf::Sound rock_hit;
+
 public:
 	sf::Texture rockTex, snowtex;
 	sf::Sprite rock, snow;
-	item temp;
 	std::list <item>items;
 
 	void loadItems(void);

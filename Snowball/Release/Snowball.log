@@ -1,0 +1,15 @@
+﻿  main.cpp
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowball.hpp(8): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowball.hpp(9): warning C4305: 'argument': truncation from 'double' to 'T'
+          with
+          [
+              T=float
+          ]
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowflakes.hpp(9): warning C4091: 'typedef ': ignored on left of 'flakes' when no variable is declared
+c:\users\arkad\documents\deadshot files\c++ programs\sfml\tests\snowball\snowball\snowflakes.hpp(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Generating code
+  1 of 247 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Snowball.vcxproj -> C:\Users\arkad\Documents\DEADSHOT FILES\C++ Programs\SFML\TESTS\Snowball\Release\Snowball.exe

@@ -2,7 +2,8 @@
 
 void Snowball::loadTex(void)
 {
-	if (!balltex.loadFromFile("textures/snowball_sprite.png")) {
+	if (!balltex.loadFromFile("res/textures/snowball_sprite.png") || (!snowhitbuf.loadFromFile("res/sounds/snowball_hit.wav"))
+		|| (!gameoverbuf.loadFromFile("res/sounds/hurt.wav")) ||(!snowballcollectbuf.loadFromFile("res/sounds/snowball_collect.wav"))) {
 		std::cout << "Resource loading failed";
 		exit(1);
 	}
@@ -11,8 +12,9 @@ void Snowball::loadTex(void)
 	ball.setScale(scallingFactor);
 	pos = sf::Vector2f(windowSize.x / 2 - ball.getGlobalBounds().width / 2, windowSize.y - ball.getGlobalBounds().width - 100);
 
-	line.setSize(sf::Vector2f(windowSize.x, 20));
-	line.setPosition(0, windowSize.y - 100);
+	snow_hit.setBuffer(snowhitbuf);
+	game_over.setBuffer(gameoverbuf);
+	snowballcollect.setBuffer(snowballcollectbuf);
 }
 
 void Snowball::move(float dt, int key)
@@ -63,6 +65,7 @@ void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &sno
 	scallingFactor.y = scallingFactor.y - scaleDecr;
 	if (scallingFactor.x <= 0.2) {
 		gameState = 0;
+		game_over.play();
 		return;
 	}
 	ball.setScale(scallingFactor);
@@ -77,6 +80,7 @@ void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &sno
 				ball.setScale(scallingFactor);
 				pos.y = windowSize.y - ball.getGlobalBounds().width - 100;
 				ball.setPosition(pos.x, pos.y);
+				snowballcollect.play();
 			}
 		}
 		else if (i->sprite.getTexture() == &rockTex) {
@@ -84,6 +88,8 @@ void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &sno
 				i->collided = true;
 				scallingFactor = sf::Vector2f(0, 0);
 				gameState = 0;
+				game_over.play();
+				sf::sleep(sf::milliseconds(1000));
 				return;
 			}
 		}

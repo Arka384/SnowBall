@@ -2,13 +2,16 @@
 
 void GameItems::loadItems(void)
 {
-	if (!rockTex.loadFromFile("textures/rock.png") || !snowtex.loadFromFile("textures/snowball.png")) {
+	if (!rockTex.loadFromFile("res/textures/rock.png") || !snowtex.loadFromFile("res/textures/snowball.png")
+		|| !(rockbuf.loadFromFile("res/sounds/rock_hit.wav"))) {
 		std::cout << "Resource loading failed";
 		exit(1);
 	}
 	rock.setTexture(rockTex);
 	snow.setTexture(snowtex);
 	snow.setPosition(0, -snow.getGlobalBounds().height);
+	rock_hit.setBuffer(rockbuf);
+	rock_hit.setVolume(60.f);
 }
 
 void GameItems::spwanItems(float dt, sf::Vector2i windowSize)
@@ -48,8 +51,10 @@ void GameItems::updateItems(float dt, sf::Vector2i windowSize)
 	while (i != items.end()) {
 		float y = i->sprite.getPosition().y + i->velocityY * dt;
 		i->sprite.setPosition(i->sprite.getPosition().x, y);
-		if (i->sprite.getPosition().y + i->sprite.getGlobalBounds().width > windowSize.y - 100)
+		if (i->sprite.getPosition().y + i->sprite.getGlobalBounds().width > windowSize.y - 100) {
 			i = items.erase(i);
+			rock_hit.play();
+		}
 		else
 			i++;
 	}

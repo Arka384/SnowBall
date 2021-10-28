@@ -13,20 +13,25 @@ int main()
 	sf::Time time;
 	sf::Texture bgtex, title_tex;
 	sf::Sprite bg, title;
+	sf::SoundBuffer themeSoundbuf;
+	sf::Sound theme_sound;
 	float dt = 0;
 	int game_state = 0;
 
 	snowball.loadTex();
 	rock.loadItems();
 	snowflakes.loadSnowFlakes(snowball.windowSize);
-	if (!bgtex.loadFromFile("textures/bg.png") || !title_tex.loadFromFile("textures/titlescreen.png")) {
+	if ((!bgtex.loadFromFile("res/textures/bg.png")) || (!title_tex.loadFromFile("res/textures/titlescreen.png"))
+		|| (!themeSoundbuf.loadFromFile("res/sounds/theme_song.wav"))) {
 		std::cout << "Resource loading failed";
 		exit(1);
 	}
 	bg.setTexture(bgtex);
 	bg.setScale(1.25, 1.25);
 	title.setTexture(title_tex);
-
+	theme_sound.setBuffer(themeSoundbuf);
+	theme_sound.setLoop(true);
+	theme_sound.play();
 
 	srand(static_cast<unsigned>(std::time(0)));
 

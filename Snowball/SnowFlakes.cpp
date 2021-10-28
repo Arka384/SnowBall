@@ -2,7 +2,7 @@
 
 void SnowFlakes::loadSnowFlakes(sf::Vector2i size)
 {
-	if (!flakesTex.loadFromFile("textures/flakes.png")) {
+	if (!flakesTex.loadFromFile("res/textures/flakes.png")) {
 		std::cout << "Resource loading failed";
 		exit(1);
 	}
