@@ -11,7 +11,6 @@ void Snowball::loadTex(void)
 	ball.setTextureRect(sf::IntRect(0, 0, 40, 40));
 	ball.setScale(scallingFactor);
 	pos = sf::Vector2f(windowSize.x / 2 - ball.getGlobalBounds().width / 2, windowSize.y - ball.getGlobalBounds().width - 100);
-
 	snow_hit.setBuffer(snowhitbuf);
 	game_over.setBuffer(gameoverbuf);
 	snowballcollect.setBuffer(snowballcollectbuf);
@@ -36,12 +35,20 @@ void Snowball::move(float dt, int key)
 		ball.setTextureRect(sf::IntRect(rectX, 0, 40, 40));
 	}
 
+	/*
+	if (pos.y + ball.getGlobalBounds().width > 500)
+		dy -= jumpforce * dt;
+	else
+		dy += gravity * dt;
+	pos.y += dy*dt;
+	*/
+
 	if (pos.x < 0)
 		pos.x = 0;
 	if (pos.x + ball.getGlobalBounds().width > windowSize.x)
 		pos.x = windowSize.x - ball.getGlobalBounds().width;
 
-	ball.setPosition(pos.x, pos.y);
+	ball.setPosition(pos);
 }
 
 void Snowball::resetSnowball(void)
@@ -61,8 +68,8 @@ void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &sno
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		move(dt, 1);
 
-	scallingFactor.x = scallingFactor.x - scaleDecr;
-	scallingFactor.y = scallingFactor.y - scaleDecr;
+	scallingFactor.x = scallingFactor.x - scaleDecr * dt;
+	scallingFactor.y = scallingFactor.y - scaleDecr * dt;
 	if (scallingFactor.x <= 0.2) {
 		gameState = 0;
 		game_over.play();
@@ -71,7 +78,13 @@ void Snowball::updateSnowball(float dt, std::list<item> &items, sf::Texture &sno
 	ball.setScale(scallingFactor);
 	pos.y = windowSize.y - ball.getGlobalBounds().width - 100;
 	ball.setPosition(pos.x, pos.y);
-
+	/*
+	if (pos.y + ball.getGlobalBounds().width < 500) {
+		dy += gravity * dt;
+		pos.y += dy * dt;
+		ball.setPosition(pos);
+	}	*/
+		
 	for (auto i = items.begin(); i != items.end(); i++) {
 		if (i->sprite.getTexture() == &snowTex) {
 			if (i->sprite.getGlobalBounds().intersects(ball.getGlobalBounds()) && !i->collided ) {
