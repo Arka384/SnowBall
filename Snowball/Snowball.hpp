@@ -5,7 +5,7 @@ class Snowball
 {
 private:
 	sf::Vector2f pos;
-	float speed = 400.f, scaleDecr = 0.09;
+	float speed = 400.f, scaleDecr = 0.1;
 	sf::Vector2f scallingFactor = sf::Vector2f(1.4, 1.4);
 	int rectX = 0;
 	sf::SoundBuffer snowhitbuf, gameoverbuf, snowballcollectbuf;

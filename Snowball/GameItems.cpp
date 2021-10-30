@@ -3,7 +3,7 @@
 void GameItems::loadItems(void)
 {
 	if (!rockTex.loadFromFile("res/textures/rock.png") || !snowtex.loadFromFile("res/textures/snowball.png")
-		|| !(rockbuf.loadFromFile("res/sounds/rock_hit.wav"))) {
+		|| !(rockbuf.loadFromFile("res/sounds/rock_hit.wav")) || (!font.loadFromFile("res/flappy.ttf")) ) {
 		std::cout << "Resource loading failed";
 		exit(1);
 	}
@@ -12,6 +12,16 @@ void GameItems::loadItems(void)
 	snow.setPosition(0, -snow.getGlobalBounds().height);
 	rock_hit.setBuffer(rockbuf);
 	rock_hit.setVolume(60.f);
+
+	Scoretext.setFont(font);
+	score.setFont(font);
+	Scoretext.setCharacterSize(30.f);
+	score.setCharacterSize(30.f);
+	Scoretext.setFillColor(sf::Color::Black);
+	score.setFillColor(sf::Color::Black);
+	Scoretext.setString("Score:");
+	Scoretext.setPosition(5, 5);
+	score.setPosition(120, 5);
 }
 
 void GameItems::spwanItems(float dt, sf::Vector2i windowSize)
@@ -40,26 +50,31 @@ void GameItems::spwanItems(float dt, sf::Vector2i windowSize)
 			rockCount = 0;
 		}
 		timer = 0;
-		if(spwanTime > 0.45)
-			spwanTime -= dt * 50;
+		if (spwanTime > 0.45)
+			spwanTime -= dt * 2.5;
 	}
 }
 
-void GameItems::updateItems(float dt, sf::Vector2i windowSize)
+void GameItems::updateItems(float dt, sf::Vector2i windowSize, int &last_score)
 {
+	std::stringstream score_stream;
+	score_stream << CurrentScore;
+	score.setString(score_stream.str());
+
 	auto i = items.begin();
 	while (i != items.end()) {
 		float y = i->sprite.getPosition().y + i->velocityY * dt;
 		i->sprite.setPosition(i->sprite.getPosition().x, y);
 		if (i->sprite.getPosition().y + i->sprite.getGlobalBounds().width > windowSize.y - 100) {
 			i = items.erase(i);
+			CurrentScore++;
+			last_score = CurrentScore;
 			rock_hit.play();
 		}
 		else
 			i++;
 	}
 
-	//new rock spwaning
 	spwanItems(dt, windowSize);
 }
 
@@ -68,6 +83,7 @@ void GameItems::resetItems(void)
 	items.clear();
 	rockCount = 0;
 	timer = 0;
+	CurrentScore = 0;
 	spwanTime = 2.f;
 }
 
@@ -77,4 +93,6 @@ void GameItems::renderItems(sf::RenderWindow &window)
 		if(!i->collided)
 			window.draw(i->sprite);
 	}
+	window.draw(Scoretext);
+	window.draw(score);
 }
